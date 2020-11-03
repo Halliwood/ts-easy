@@ -18,7 +18,7 @@
     "import"
   ],
   "author": "Halliwood",
-  "bin": "bin/unity-i18n",
+  "bin": "bin/ts-easy",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Halliwood/ts-easy/issues"
