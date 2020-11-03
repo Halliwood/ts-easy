@@ -1,11 +1,11 @@
 {
   "name": "ts-easy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A useful tool to write typesciprt more easily.",
   "main": "bin/index.js",
   "scripts": {
-    "test": "tsc && npm run try", 
-    "try": "node bin/index.js -s E:\\qhgame\\tsproj\\src\\ -t Vector2Util", 
+    "test": "tsc && npm run try",
+    "try": "node bin/index.js -s E:\\qhgame\\tsproj\\src\\ -t Vector2Util",
     "release": "npm version patch && npm publish"
   },
   "repository": {
