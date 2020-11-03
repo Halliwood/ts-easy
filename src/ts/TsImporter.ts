@@ -36,16 +36,8 @@ export class TsImporter {
         this.dirname = path.dirname(filePath);
         this.fileModule = path.relative(inputFolder, this.dirname).replace(/\\+/g, '.').replace(/\.$/, '');
         this.importedMap = this.analysor.getImportedMap(filePath);
-        if(filePath.includes('CommonForm')) {
-            for(let key in this.importedMap) {
-                console.log('read imported map: %s -> %s in %s', key, this.importedMap[key], filePath);
-            }
-        }
         this.declaredMap = {};
         this.processAST(ast);
-        if(filePath.includes('CommonForm')) {
-            console.log('allTypes: %s\n', this.allTypes.join(', '));
-        }
 
         let importStr = '';
         let usedTypeMap: {[typeName: string]: boolean} = {};
@@ -54,9 +46,6 @@ export class TsImporter {
             usedTypeMap[type] = true;
             if(!this.declaredMap[type] && !(type in this.importedMap) && !this.builtInTypes.includes(type)) {
                 let classInfo = this.analysor.classNameMap[type];
-                if(filePath.includes('CommonForm')) {
-                    console.log('add import %s for %s', type, this.relativePath);
-                }
                 if(classInfo) {
                     // 需要import
                     if(!this.option.module) {
@@ -666,7 +655,7 @@ export class TsImporter {
             if(!(ast as any).__parent || ((ast as any).__parent.type != AST_NODE_TYPES.CatchClause && (!(ast as any).__parent.__parent || !(ast as any).__parent.__parent.__parent || AST_NODE_TYPES.ForInStatement != (ast as any).__parent.__parent.__parent.type))) {
                 this.processAST(ast.typeAnnotation);
             }
-        } else if((ast as any).__isType) {
+        } else if((ast as any).__isType || this.option.checkTypes.includes(str)) {
             if(this.allTypes.indexOf(str) < 0) {
                 this.allTypes.push(str);
             }

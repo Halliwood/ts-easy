@@ -39,16 +39,8 @@ var TsImporter = /** @class */ (function () {
         this.dirname = path.dirname(filePath);
         this.fileModule = path.relative(inputFolder, this.dirname).replace(/\\+/g, '.').replace(/\.$/, '');
         this.importedMap = this.analysor.getImportedMap(filePath);
-        if (filePath.includes('CommonForm')) {
-            for (var key in this.importedMap) {
-                console.log('read imported map: %s -> %s in %s', key, this.importedMap[key], filePath);
-            }
-        }
         this.declaredMap = {};
         this.processAST(ast);
-        if (filePath.includes('CommonForm')) {
-            console.log('allTypes: %s\n', this.allTypes.join(', '));
-        }
         var importStr = '';
         var usedTypeMap = {};
         for (var i = 0, len = this.allTypes.length; i < len; i++) {
@@ -56,9 +48,6 @@ var TsImporter = /** @class */ (function () {
             usedTypeMap[type] = true;
             if (!this.declaredMap[type] && !(type in this.importedMap) && !this.builtInTypes.includes(type)) {
                 var classInfo = this.analysor.classNameMap[type];
-                if (filePath.includes('CommonForm')) {
-                    console.log('add import %s for %s', type, this.relativePath);
-                }
                 if (classInfo) {
                     // 需要import
                     if (!this.option.module) {
@@ -551,7 +540,7 @@ var TsImporter = /** @class */ (function () {
                 this.processAST(ast.typeAnnotation);
             }
         }
-        else if (ast.__isType) {
+        else if (ast.__isType || this.option.checkTypes.includes(str)) {
             if (this.allTypes.indexOf(str) < 0) {
                 this.allTypes.push(str);
             }

@@ -33,12 +33,14 @@ var Main = /** @class */ (function () {
     function Main() {
     }
     /**不支持内联函数、函数语句、单行声明多个成员变量 */
-    Main.prototype.checkImports = function (inputPath, outputPath, module) {
+    Main.prototype.checkImports = function (inputPath, checkTypes, module) {
+        if (checkTypes === void 0) { checkTypes = ''; }
+        if (module === void 0) { module = false; }
         var startAt = (new Date()).getTime();
         this.inputFolder = inputPath;
-        this.outputFolder = outputPath;
         this.transOption = {};
         this.transOption.module = module;
+        this.transOption.checkTypes = checkTypes.split(/,\s*/);
         if (!this.transOption.tmpRoot) {
             this.transOption.tmpRoot = 'tmp/';
         }
@@ -50,7 +52,7 @@ var Main = /** @class */ (function () {
             fs.mkdirSync(this.tmpAstDir, { recursive: true });
         if (!this.tsAnalysor) {
             this.tsAnalysor = new TsAnalysor_1.TsAnalysor(this.transOption);
-            this.tsMaker = new TsImporter_1.TsImporter(this.tsAnalysor, this.transOption);
+            this.tsImporter = new TsImporter_1.TsImporter(this.tsAnalysor, this.transOption);
         }
         var inputStat = fs.statSync(inputPath);
         if (inputStat.isFile()) {
@@ -111,7 +113,7 @@ var Main = /** @class */ (function () {
             // if(filePath.indexOf('Device.ts')<0) return;
             console.log('\x1B[1A\x1B[Kchecking: %s', filePath);
             var astContent = fs.readFileSync(tmpAstPath, 'utf-8');
-            this.tsMaker.check(JSON.parse(astContent), this.inputFolder, filePath);
+            this.tsImporter.check(JSON.parse(astContent), this.inputFolder, filePath);
         }
     };
     Main.prototype.dumpAnalysor = function () {

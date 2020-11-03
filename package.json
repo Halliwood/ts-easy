@@ -4,7 +4,8 @@
   "description": "A useful tool to write typesciprt more easily.",
   "main": "bin/index.js",
   "scripts": {
-    "test": "tsc && node bin/index.js -s E:\\qhgame\\tsproj\\src\\"
+    "test": "tsc && npm run try", 
+    "try": "node bin/index.js -s E:\\qhgame\\tsproj\\src\\ -t Vector2Util"
   },
   "repository": {
     "type": "git",

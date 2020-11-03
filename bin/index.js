@@ -17,10 +17,15 @@ var getPath = function (val) {
 program
     .version(myPackage.version, "-v, --version")
     .option("-s, --src <path>", "[MUST] actionscript files path. both direction or single file.", getPath)
+    .option("-t, --types <string>", "types to check if need to import.")
     .parse(process.argv);
 if (!program.src) {
     console.warn("--src option is MUST.");
     program.help();
 }
+if (!program.src) {
+    console.warn("--src option is MUST.");
+    program.help();
+}
 var main = new Main_1.default();
-main.checkImports(program.src, program.dist, program.module);
+main.checkImports(program.src, program.types, program.module);

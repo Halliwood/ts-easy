@@ -12,23 +12,22 @@ enum As2TsPhase {
 
 export default class Main {    
     private tsAnalysor: TsAnalysor;
-    private tsMaker: TsImporter;
+    private tsImporter: TsImporter;
 
     private inputFolder: string;
-    private outputFolder: string;
     private transOption: TsEasyOption;
     
     private tmpTsDir: string;
     private tmpAstDir: string;
 
     /**不支持内联函数、函数语句、单行声明多个成员变量 */
-    checkImports(inputPath: string, outputPath: string, module: boolean) {
+    checkImports(inputPath: string, checkTypes: string = '', module: boolean = false) {
         let startAt = (new Date()).getTime();
         this.inputFolder = inputPath;
-        this.outputFolder = outputPath;
         
         this.transOption = {};
         this.transOption.module = module;
+        this.transOption.checkTypes = checkTypes.split(/,\s*/);
         if(!this.transOption.tmpRoot) {
             this.transOption.tmpRoot = 'tmp/';
         }
@@ -39,7 +38,7 @@ export default class Main {
 
         if(!this.tsAnalysor) {
             this.tsAnalysor = new TsAnalysor(this.transOption);
-            this.tsMaker = new TsImporter(this.tsAnalysor, this.transOption);
+            this.tsImporter = new TsImporter(this.tsAnalysor, this.transOption);
         }
 
         let inputStat = fs.statSync(inputPath);
@@ -100,7 +99,7 @@ export default class Main {
             // if(filePath.indexOf('Device.ts')<0) return;
             console.log('\x1B[1A\x1B[Kchecking: %s', filePath);    
             let astContent = fs.readFileSync(tmpAstPath, 'utf-8');
-            this.tsMaker.check(JSON.parse(astContent), this.inputFolder, filePath);
+            this.tsImporter.check(JSON.parse(astContent), this.inputFolder, filePath);
         }
     }
 
