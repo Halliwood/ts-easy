@@ -5,7 +5,8 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "tsc && npm run try", 
-    "try": "node bin/index.js -s E:\\qhgame\\tsproj\\src\\ -t Vector2Util"
+    "try": "node bin/index.js -s E:\\qhgame\\tsproj\\src\\ -t Vector2Util", 
+    "release": "npm version patch && npm publish"
   },
   "repository": {
     "type": "git",
