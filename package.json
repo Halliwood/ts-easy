@@ -1,6 +1,6 @@
 {
   "name": "ts-easy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A useful tool to write typesciprt more easily.",
   "main": "bin/index.js",
   "scripts": {
